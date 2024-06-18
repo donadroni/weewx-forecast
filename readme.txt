@@ -81,7 +81,7 @@ Example (building xtide)
   (decompress and cd to directory)
   sudo apt-get install libpng-dev
   sudo apt-get install libtcd-dev
-  ./configure
+  ./configure --with-x=no
   make
 Example (setting prog variable t point to where you have built xtide):
 [Forecast]
