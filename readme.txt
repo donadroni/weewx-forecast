@@ -77,8 +77,12 @@ This is perhaps true of other distributions.
 You'll need to build it yourself and set the 'prog' variable in the xtide
 section.
 Example (building xtide)
+Note: the first two lines change to your home directory and set the mode on your home directory
+      such that the weewx user can find the tide program.
+  cd
+  chmod 755 .
   wget https://flaterco.com/files/xtide/xtide-2.15.5.tar.xz
-  (decompress and cd to directory)
+  (decompress and then cd to xtide-2.15.5 directory)
   sudo apt-get install libpng-dev
   sudo apt-get install libtcd-dev
   ./configure --with-x=no
