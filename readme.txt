@@ -82,8 +82,8 @@ Example (building xtide)
   sudo apt-get install libpng-dev
   sudo apt-get install libtcd-dev
   ./configure --with-x=no
-  make
-Example (setting prog variable t point to where you have built xtide):
+  make tide
+Example (setting prog variable to point to where you have built xtide):
 [Forecast]
     ...
     [[XTide]]
@@ -104,7 +104,13 @@ Installation instructions:
 
 1) run the installer:
 
-wee_extension --install weewx-forecast-3.4.0b11.zip
+For WeeWX 5:
+
+weectl extension install weewx-forecast-3.5.zip
+
+For WeeWX 4:
+
+wee_extension --install weewx-forecast-3.5.zip
 
 2) modify weewx.conf for your location:
 
