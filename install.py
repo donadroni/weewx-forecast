@@ -10,7 +10,7 @@ def loader():
 class ForecastInstaller(ExtensionInstaller):
     def __init__(self):
         super(ForecastInstaller, self).__init__(
-            version="3.5",
+            version="3.6",
             name='forecast',
             description='Generate and display weather and tide forecasts.',
             author="Matthew Wall",
@@ -23,7 +23,8 @@ class ForecastInstaller(ExtensionInstaller):
                               'user.forecast.AerisForecast',
                               'user.forecast.WWOForecast',
                               'user.forecast.DSForecast',
-                              'user.forecast.XTideForecast'],
+                              'user.forecast.XTideForecast',
+                              'user.forecast.IcelandicMetForecast'],  # Added Icelandic Met Office forecast
             config={
                 'Forecast': {
                     'data_binding': 'forecast_binding',
@@ -47,7 +48,9 @@ class ForecastInstaller(ExtensionInstaller):
                     'WWO': {
                         'api_key': 'INSERT_WWO_API_KEY_HERE'},
                     'DS': {
-                        'api_key': 'INSERT_DS_API_KEY_HERE'}},
+                        'api_key': 'INSERT_DS_API_KEY_HERE'},
+                    'IcelandicMet': {  # Added configuration for Icelandic Met Office
+                        'station_id': '6300'}},
                 'DataBindings': {
                     'forecast_binding': {
                         'manager': 'weewx.manager.Manager',
