@@ -1313,11 +1313,13 @@ class IcelandicMetForecast(StdService):
         super(IcelandicMetForecast, self).__init__(engine, config_dict)
         self.station_id = config_dict.get('IcelandicMet', {}).get('station_id')
         self.url = f"http://xmlweather.vedur.is/?op_w=xml&type=forec&lang=en&view=xml&ids={self.station_id}"
+        weewx.debug.log(f"Using URL: {self.url}")
 
     def fetch_weather_data(self):
         try:
             response = requests.get(self.url)
             response.raise_for_status()
+            weewx.debug.log(f"Fetched data: {response.content[:200]}...")  # Log a snippet of the fetched data
             return response.content
         except requests.RequestException as e:
             self.log_error(f"Failed to fetch data: {e}")
@@ -1335,6 +1337,7 @@ class IcelandicMetForecast(StdService):
                 'pressure': forecast.find('.//P').text if forecast.find('.//P') is not None else 'N/A'
             }
             forecast_data.append(data)
+        weewx.debug.log(f"Parsed forecast data: {forecast_data}")
         return forecast_data
 
     def get_forecast(self):
