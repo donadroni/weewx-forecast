@@ -534,6 +534,9 @@ import subprocess
 import threading
 import time
 import six.moves.urllib.request, six.moves.urllib.error, six.moves.urllib.parse
+import requests #Added for Icelandic Met option
+import xml.etree.ElementTree as ET #Added for Icelandic Met option
+
 
 from io import BytesIO
 from six.moves import range
@@ -4567,6 +4570,45 @@ class ForecastVariables(SearchList):
                                      moon_phases=self.moon_phases,
                                      formatter=self.formatter)
 
+"""Icelandic Met Addition"""
+class IcelandicMetForecast(Forecast):
+    """Service to fetch and parse forecasts from the Icelandic Met Office."""
+
+    def __init__(self, engine, config_dict):
+        super(IcelandicMetForecast, self).__init__(engine, config_dict, 'IcelandicMet')
+        self.station_id = config_dict.get('Forecast', {}).get('IcelandicMet', {}).get('station_id', '6300')
+        self.url = f"http://xmlweather.vedur.is/?op_w=xml&type=forec&lang=en&view=xml&ids={self.station_id}"
+
+    def fetch_weather_data(self):
+        try:
+            response = requests.get(self.url)
+            response.raise_for_status()
+            return response.content
+        except requests.RequestException as e:
+            logerr(f"Failed to fetch data: {e}")
+            return None
+
+    def parse_weather_data(self, xml_data):
+        root = ET.fromstring(xml_data)
+        forecast_data = []
+        for forecast in root.findall('.//forecast'):
+            data = {
+                'time': forecast.find('ftime').text,
+                'temperature': forecast.find('.//T').text if forecast.find('.//T') is not None else 'N/A',
+                'wind_speed': forecast.find('.//F').text if forecast.find('.//F') is not None else 'N/A',
+                'wind_direction': forecast.find('.//D').text if forecast.find('.//D') is not None else 'N/A',
+                'pressure': forecast.find('.//P').text if forecast.find('.//P') is not None else 'N/A'
+            }
+            forecast_data.append(data)
+        return forecast_data
+
+    def get_forecast(self, event):
+        xml_data = self.fetch_weather_data()
+        if xml_data:
+            forecast_data = self.parse_weather_data(xml_data)
+            loginf(f"Processed forecast data: {forecast_data}")
+            return forecast_data
+        return None
 
 """ Forecast Plot Generator
 
