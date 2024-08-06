@@ -165,7 +165,7 @@ class ForecastInstaller(ExtensionInstaller):
                     'skins/forecast/icons/rainshwrs.png',
                     'skins/forecast/icons/raintorrent.png',
                     'skins/forecast/icons/sleet.png',
-                    'skins/forecast/icons/snow',
+                    'skins/forecast/icons/snow.png',
                     'skins/forecast/icons/snowflake.png',
                      'skins/forecast/icons/snowshwrs.png',
                      'skins/forecast/icons/sprinkles.png',
